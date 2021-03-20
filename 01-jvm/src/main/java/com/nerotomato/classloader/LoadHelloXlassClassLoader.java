@@ -40,9 +40,10 @@ public class LoadHelloXlassClassLoader extends ClassLoader {
                 "/+yVnome0JaQ0K+NlpGLrIuNmp6S/v/4j42WkYuTkf7/6tezlZ6JntCTnpGY0KyLjZaRmMTWqf/e" +
                 "//r/+f///////f/+//j/9//+//b////i//7//v////rVSP/+Tv////7/9f////n//v////7//v/0" +
                 "//f//v/2////2v/9//7////2Tf/97fxJ//tO/////v/1////9f/9////+//3//r//v/z/////f/y";*/
-        String base64Code = encodeToBase64("E:\\Java课程\\Geek\\week01\\作业相关\\Hello\\Hello.xlass");
+        //String base64Code = encodeToBase64("E:\\Java课程\\Geek\\week01\\作业相关\\Hello\\Hello.xlass");
         //byte[] bytes = decodeBase64(base64Code);
-        byte[] bytes = getBytes("E:\\Java课程\\Geek\\week01\\作业相关\\Hello\\Hello.xlass");
+
+        byte[] bytes = getBytes("E:\\IdeaProjects\\daily-practice\\01-jvm\\src\\main\\java\\com\\nerotomato\\classloader\\Hello.xlass");
         byte[] newBytes = new byte[bytes.length];
         for (int i = 0; i < bytes.length; i++) {
             newBytes[i] = (byte) (255 - bytes[i]);
