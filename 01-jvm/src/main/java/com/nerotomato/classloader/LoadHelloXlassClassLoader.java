@@ -57,14 +57,14 @@ public class LoadHelloXlassClassLoader extends ClassLoader {
 
     /**
      * 将base64编码的字符串解码成byte字节数组
-     * */
+     */
     public byte[] decodeBase64(String code) {
         return Base64.getDecoder().decode(code);
     }
 
     /**
      * 对xlass文件进行base64编码
-     * */
+     */
     public String encodeToBase64(String filepath) {
         File f = new File(filepath);
         Path path = Paths.get(f.getAbsolutePath());
@@ -81,6 +81,9 @@ public class LoadHelloXlassClassLoader extends ClassLoader {
         return base64Code;
     }
 
+    /**
+     * 读取文件到byte数组
+     */
     public byte[] getBytes(String filepath) {
         File f = new File(filepath);
         Path path = Paths.get(f.getAbsolutePath());
