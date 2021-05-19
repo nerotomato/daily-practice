@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: tomato-shop-admin
+
+  #使用Spring提供的轻量级数据路由类 AbstractRoutingDataSource来实现多数据源切换
+  datasource:
+    master:
+      jdbc-url: jdbc:mysql://localhost:3306/tomato_shop?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver # 3.2.0开始支持SPI可省略此配置
+      type: com.zaxxer.hikari.HikariDataSource
+    slave:
+      jdbc-url: jdbc:mysql://localhost:3307/tomato_shop?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.zaxxer.hikari.HikariDataSource
+
+  #整合spring-boot-starter-data-jpa jpa的正向过程
+#  jpa:
+#    hibernate.ddl-auto: update #指定为update，每次启动项目检测表结构有变化的时候会新增字段，表不存在时会新建，如果指定create，则每次启动项目都会清空数据并删除表，再新建
+#    #properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+#    #显示sql
+#    show-sql: true
+
+mybatis:
+  mapperLocations: classpath:mapper/**/*.xml
+# pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+  # ===== 自定义swagger配置 ===== #
+swagger:
+  enable: true
+  application-name: Tomato Shop
+  application-version: 1.0
+  application-description: springfox swagger 3.0整合
+  try-host: http://localhost:${server.port}
