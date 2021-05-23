@@ -22,9 +22,12 @@ CREATE TABLE `ums_member` (
 -- tomato_shop.oms_order definition 订单表
 DROP TABLE IF EXISTS oms_order;
 
+DROP TABLE IF EXISTS oms_order;
+
 CREATE TABLE `oms_order` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单id',
   `member_id` bigint NOT NULL COMMENT '用户id',
+  `source_type` tinyint NOT NULL COMMENT '订单来源：1->APP;2->网页',
   `order_sn` varchar(64) DEFAULT NULL COMMENT '订单编号',
   `member_username` varchar(64) NOT NULL COMMENT '用户帐号',
   `total_amount` decimal(10,2) DEFAULT NULL COMMENT '订单总金额',
