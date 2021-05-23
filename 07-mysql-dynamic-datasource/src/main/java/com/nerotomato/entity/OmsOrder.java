@@ -16,6 +16,8 @@ public class OmsOrder {
     private long id;
     //会员id
     private long memberId;
+    //订单来源 1->App 2->网页
+    private int sourceType;
     //订单编号
     private String orderSn;
     //会员用户名

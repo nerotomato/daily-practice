@@ -2,6 +2,8 @@ package com.nerotomato.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.nerotomato.datasource.annotation.DataSourceRouting;
+import com.nerotomato.datasource.type.DynamicDataSource;
 import com.nerotomato.entity.*;
 import com.nerotomato.mapper.UmsMemberMapper;
 import com.nerotomato.service.UmsMemberService;
@@ -23,32 +25,38 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     private UmsMemberMapper umsMemberMapper;
 
     @Override
+    @DataSourceRouting(value = DynamicDataSource.MASTER)
     public int save(UmsMember user) {
         return umsMemberMapper.insertMember(user);
     }
 
     @Override
+    @DataSourceRouting(value = DynamicDataSource.MASTER)
     public int delete(UmsMember user) {
         umsMemberMapper.deleteMemberbyUsername(user);
         return 0;
     }
 
     @Override
+    @DataSourceRouting(value = DynamicDataSource.MASTER)
     public int update(UmsMember object) {
         return 0;
     }
 
     @Override
+    @DataSourceRouting(value = DynamicDataSource.SLAVE)
     public UmsMember find(UmsMember object) {
         return null;
     }
 
     @Override
+    @DataSourceRouting(value = DynamicDataSource.SLAVE)
     public List<UmsMember> findAll() {
         return umsMemberMapper.queryAllMembers();
     }
 
     @Override
+    @DataSourceRouting(value = DynamicDataSource.SLAVE)
     public PageResult findByPage(PageRequest pageRequest) {
         return PageUtils.getPageResult(getPageInfo(pageRequest));
     }

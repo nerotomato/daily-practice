@@ -20,23 +20,36 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.zaxxer.hikari.HikariDataSource
 
-  #整合spring-boot-starter-data-jpa jpa的正向过程
-#  jpa:
-#    hibernate.ddl-auto: update #指定为update，每次启动项目检测表结构有变化的时候会新增字段，表不存在时会新建，如果指定create，则每次启动项目都会清空数据并删除表，再新建
-#    #properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-#    #显示sql
-#    show-sql: true
+  #整合redis
+  redis:
+    host: localhost # Redis服务器地址
+    database: 0 # Redis数据库索引（默认为0）
+    port: 6379 # Redis服务器连接端口
+    password: # Redis服务器连接密码（默认为空）
+    lettuce:
+      pool:
+        max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 8 # 连接池中的最大空闲连接
+        min-idle: 0 # 连接池中的最小空闲连接
+        timeout: 3000ms # 连接超时时间（毫秒）
+    key:
+      database: 'tomato_shop'
+      authCode: 'ums:authCode'
+      orderId: 'oms:orderId'
+      member: 'ums:member'
 
+#整合mybatis
 mybatis:
   mapperLocations: classpath:mapper/**/*.xml
-# pagehelper
+#mybatis分页插件pagehelper
 pagehelper:
   helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
 
-  # ===== 自定义swagger配置 ===== #
+# ===== 自定义swagger配置 ===== #
 swagger:
   enable: true
   application-name: Tomato Shop

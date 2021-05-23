@@ -8,6 +8,7 @@
 
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="member_id" property="memberId" jdbcType="BIGINT"/>
+        <result column="source_type" property="sourceType" jdbcType="INTEGER"/>
         <result column="order_sn" property="orderSn" jdbcType="VARCHAR"/>
         <result column="member_username" property="memberUsername" jdbcType="VARCHAR"/>
         <result column="total_amount" property="totalAmount" jdbcType="DECIMAL"/>
@@ -42,7 +43,8 @@
     </select>
 
     <select id="queryOrderByOrderSn" resultType="com.nerotomato.entity.OmsOrder">
-        select member_id, order_sn, member_username, total_amount, pay_type, status, order_type, receiver_name,
+        select member_id, source_type, order_sn, member_username, total_amount, pay_type, status, order_type,
+        receiver_name,
         receiver_phone, receiver_post_code, receiver_province, receiver_city, receiver_region, receiver_detail_address,
         note, confirm_status, delete_status, payment_time, comment_time, create_time, update_time
         from oms_order
@@ -51,10 +53,10 @@
 
     <insert id="insertOrder" parameterType="com.nerotomato.entity.OmsOrder">
         INSERT INTO oms_order
-        (member_id, order_sn, member_username, total_amount, pay_type, status, order_type, receiver_name,
+        (member_id, source_type, order_sn, member_username, total_amount, pay_type, status, order_type, receiver_name,
         receiver_phone, receiver_post_code, receiver_province, receiver_city, receiver_region, receiver_detail_address,
         note, confirm_status, delete_status, payment_time, comment_time, create_time, update_time)
-        VALUES(#{memberId}, #{orderSn}, #{memberUsername}, #{totalAmount}, #{payType},
+        VALUES(#{memberId}, #{sourceType}, #{orderSn}, #{memberUsername}, #{totalAmount}, #{payType},
         #{status}, #{orderType}, #{receiverName}, #{receiverPhone}, #{receiverPostCode},
         #{receiverProvince}, #{receiverCity}, #{receiverRegion}, #{receiverDetailAddress},
         #{note}, #{confirmStatus}, #{deleteStatus}, #{paymentTime}, #{commentTime}, #{createTime}, #{updateTime})
@@ -62,13 +64,14 @@
 
     <insert id="batchSaveOrder" parameterType="list">
         INSERT INTO oms_order
-        (member_id, order_sn, member_username, total_amount, pay_type, status, order_type, receiver_name,
+        (member_id, source_type,order_sn, member_username, total_amount, pay_type, status, order_type, receiver_name,
         receiver_phone, receiver_post_code, receiver_province, receiver_city, receiver_region, receiver_detail_address,
         note, confirm_status, delete_status, payment_time, comment_time, create_time, update_time)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             (
             #{item.memberId,jdbcType=BIGINT},
+            #{item.sourceType},
             #{item.orderSn},
             #{item.memberUsername},
             #{item.totalAmount},
@@ -101,7 +104,6 @@
         UPDATE oms_order
         <trim prefix="set" suffixOverrides=",">
             <if test="memberId != null">member_id=#{memberId},</if>
-            <if test="orderSn != null">order_sn=#{orderSn},</if>
             <if test="memberUsername != null">member_username=#{memberUsername},</if>
             <if test="totalAmount != null">total_amount=#{totalAmount},</if>
             <if test="payType != null">pay_type=#{payType},</if>

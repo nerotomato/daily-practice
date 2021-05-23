@@ -1,0 +1,10 @@
+#1.基于spring自带的AbstractRoutingDataSource实现动态数据源切换以及mysql读写分离
+
+<1>自定义com.nerotomato.datasource.router.MyAbstractRoutingDataSource类继承AbstractRoutingDataSource
+重写determineCurrentLookupKey方法，获取自定义的DataSourceContextHolder中设置的当前数据源<br>
+<2>创建自定义注解@DataSourceRouting，来标记(master/slave)service方法中对数据库的操作走主库还是从库<br>
+<3>创建apo切面DataSourceRoutingAspect，切面中根据@DataSourceRouting注解的值来设置当前的数据源是主库还是从库<br>
+<4>SpringBootDemoApplication启动类上@SpringBootApplication注解添加exclude = {DataSourceAutoConfiguration.class}，
+排除Spring的数据源自动配置类DataSourceAutoConfiguration，
+自定义数据源一定要排除SpringBoot自动配置数据源，不然会出现循环引用的问题，
+The dependencies of some of the beans in the application context form a cycle
