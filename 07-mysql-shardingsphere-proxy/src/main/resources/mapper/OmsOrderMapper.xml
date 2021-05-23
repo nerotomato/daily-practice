@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nerotomato.shardingsphere.proxy.mapper.OmsOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nerotomato.shardingsphere.proxy.entity.OmsOrder">
+        <id column="id" property="id"/>
+        <result column="member_id" property="memberId"/>
+        <result column="source_type" property="sourceType"/>
+        <result column="order_sn" property="orderSn"/>
+        <result column="member_username" property="memberUsername"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="pay_type" property="payType"/>
+        <result column="status" property="status"/>
+        <result column="order_type" property="orderType"/>
+        <result column="receiver_name" property="receiverName"/>
+        <result column="receiver_phone" property="receiverPhone"/>
+        <result column="receiver_post_code" property="receiverPostCode"/>
+        <result column="receiver_province" property="receiverProvince"/>
+        <result column="receiver_city" property="receiverCity"/>
+        <result column="receiver_region" property="receiverRegion"/>
+        <result column="receiver_detail_address" property="receiverDetailAddress"/>
+        <result column="note" property="note"/>
+        <result column="confirm_status" property="confirmStatus"/>
+        <result column="delete_status" property="deleteStatus"/>
+        <result column="payment_time" property="paymentTime"/>
+        <result column="comment_time" property="commentTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, member_id, source_type, order_sn, member_username, total_amount, pay_type, status, order_type,
+        receiver_name, receiver_phone, receiver_post_code, receiver_province, receiver_city, receiver_region,
+        receiver_detail_address, note, confirm_status, delete_status, payment_time, comment_time, create_time,
+        update_time
+    </sql>
+
+    <select id="queryAllOrders" resultMap="BaseResultMap">
+        select *
+        from oms_order
+        where 1=1
+    </select>
+
+    <select id="queryOrdersByPage" resultMap="BaseResultMap">
+        select *
+        from oms_order
+        where 1=1
+    </select>
+
+    <select id="queryOrderByOrderSn" resultType="com.nerotomato.shardingsphere.proxy.entity.OmsOrder">
+        select member_id, source_type, order_sn, member_username, total_amount, pay_type, status, order_type,
+        receiver_name,
+        receiver_phone, receiver_post_code, receiver_province, receiver_city, receiver_region, receiver_detail_address,
+        note, confirm_status, delete_status, payment_time, comment_time, create_time, update_time
+        from oms_order
+        where order_sn=#{orderSn}
+    </select>
+
+    <insert id="insertOrder" parameterType="com.nerotomato.shardingsphere.proxy.entity.OmsOrder">
+        INSERT INTO oms_order
+        (member_id, source_type, order_sn, member_username, total_amount, pay_type, status, order_type, receiver_name,
+        receiver_phone, receiver_post_code, receiver_province, receiver_city, receiver_region, receiver_detail_address,
+        note, confirm_status, delete_status, payment_time, comment_time, create_time, update_time)
+        VALUES(#{memberId}, #{sourceType}, #{orderSn}, #{memberUsername}, #{totalAmount}, #{payType},
+        #{status}, #{orderType}, #{receiverName}, #{receiverPhone}, #{receiverPostCode},
+        #{receiverProvince}, #{receiverCity}, #{receiverRegion}, #{receiverDetailAddress},
+        #{note}, #{confirmStatus}, #{deleteStatus}, #{paymentTime}, #{commentTime}, #{createTime}, #{updateTime})
+    </insert>
+
+    <insert id="batchSaveOrder" parameterType="list">
+        INSERT INTO oms_order
+        (member_id, source_type,order_sn, member_username, total_amount, pay_type, status, order_type, receiver_name,
+        receiver_phone, receiver_post_code, receiver_province, receiver_city, receiver_region, receiver_detail_address,
+        note, confirm_status, delete_status, payment_time, comment_time, create_time, update_time)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.memberId,jdbcType=BIGINT},
+            #{item.sourceType},
+            #{item.orderSn},
+            #{item.memberUsername},
+            #{item.totalAmount},
+            #{item.payType},
+            #{item.status},
+            #{item.orderType},
+            #{item.receiverName},
+            #{item.receiverPhone},
+            #{item.receiverPostCode},
+            #{item.receiverProvince},
+            #{item.receiverCity},
+            #{item.receiverRegion},
+            #{item.receiverDetailAddress},
+            #{item.note},
+            #{item.confirmStatus},
+            #{item.deleteStatus},
+            #{item.paymentTime},
+            #{item.commentTime},
+            #{item.createTime},
+            #{item.updateTime}
+            )
+        </foreach>
+    </insert>
+    <delete id="deleteOrderByOrderSn">
+        DELETE FROM oms_order
+        WHERE order_sn=#{orderSn}
+    </delete>
+
+    <update id="updateOrderByOrderSn" parameterType="com.nerotomato.shardingsphere.proxy.entity.OmsOrder">
+        UPDATE oms_order
+        <trim prefix="set" suffixOverrides=",">
+            <if test="memberId != null">member_id=#{memberId},</if>
+            <if test="memberUsername != null">member_username=#{memberUsername},</if>
+            <if test="totalAmount != null">total_amount=#{totalAmount},</if>
+            <if test="payType != null">pay_type=#{payType},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="orderType != null">order_type=#{orderType},</if>
+            <if test="receiverName != null">receiver_name=#{receiverName},</if>
+            <if test="receiverPhone != null">receiver_phone=#{receiverPhone},</if>
+            <if test="receiverPostCode != null">receiver_post_code=#{receiverPostCode},</if>
+            <if test="receiverProvince != null">receiver_province=#{receiverProvince},</if>
+            <if test="receiverCity != null">receiver_city=#{receiverCity},</if>
+            <if test="receiverRegion != null">receiver_region=#{receiverRegion},</if>
+            <if test="receiverDetailAddress != null">receiver_detail_address=#{receiverDetailAddress},</if>
+            <if test="note != null">note=#{note},</if>
+            <if test="confirmStatus != null">confirm_status=#{confirmStatus},</if>
+            <if test="deleteStatus != null">delete_status=#{deleteStatus},</if>
+            <if test="paymentTime != null">payment_time=#{paymentTime},</if>
+            <if test="commentTime != null">comment_time= #{commentTime},</if>
+            <if test="createTime != null">create_time=#{createTime},</if>
+            <if test="updateTime != null">update_time=#{updateTime}</if>
+        </trim>
+        WHERE order_sn=#{orderSn}
+    </update>
+
+</mapper>

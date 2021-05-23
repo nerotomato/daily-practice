@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nerotomato.shardingsphere.proxy.mapper.UmsMemberMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nerotomato.shardingsphere.proxy.entity.UmsMember">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="nickname" property="nickname" />
+        <result column="telephone" property="telephone" />
+        <result column="status" property="status" />
+        <result column="gender" property="gender" />
+        <result column="birthday" property="birthday" />
+        <result column="city" property="city" />
+        <result column="job" property="job" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, password, nickname, telephone, status, gender, birthday, city, job, create_time, update_time
+    </sql>
+
+    <select id="queryAllMembers" resultMap="BaseResultMap">
+        select *
+        from ums_member
+        where 1=1
+    </select>
+
+    <select id="queryMembersByPage" resultMap="BaseResultMap">
+        select *
+        from ums_member
+        where 1=1
+    </select>
+
+    <insert id="insertMember" parameterType="com.nerotomato.shardingsphere.proxy.entity.UmsMember">
+        INSERT INTO ums_member
+        (username, password, nickname, telephone, status, create_time, gender, birthday, city, job)
+        VALUES(#{username}, #{password}, #{nickname}, #{telephone}, #{status}, #{create_time}, #{gender},
+        #{birthday},
+        #{city}, #{job})
+    </insert>
+
+    <delete id="deleteMemberbyUsername">
+        DELETE FROM ums_member
+        WHERE username= #{username}
+    </delete>
+
+    <update id="updateMemberbyUsername" parameterType="com.nerotomato.shardingsphere.proxy.entity.UmsMember">
+        UPDATE ums_member
+        SET username=#{username}, password=#{password}, nickname=#{nickname}, telephone=#{telephone}, status=#{status},
+        create_time=#{create_time}, gender=#{gender}, birthday=#{birthday},
+        city=#{city}, job=#{job}
+        WHERE username=#{username}
+    </update>
+
+</mapper>
