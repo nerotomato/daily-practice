@@ -28,7 +28,7 @@ CREATE TABLE `oms_order` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单id',
   `member_id` bigint NOT NULL COMMENT '用户id',
   `source_type` tinyint NOT NULL COMMENT '订单来源：1->APP;2->网页',
-  `order_sn` varchar(64) DEFAULT NULL COMMENT '订单编号',
+  `order_id` bigint DEFAULT NULL COMMENT '订单编号',
   `member_username` varchar(64) NOT NULL COMMENT '用户帐号',
   `total_amount` decimal(10,2) DEFAULT NULL COMMENT '订单总金额',
   `pay_type` tinyint DEFAULT NULL COMMENT '支付方式：1->支付宝；2->微信; 3->其他',
