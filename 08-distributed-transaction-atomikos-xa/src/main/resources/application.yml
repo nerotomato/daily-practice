@@ -1,0 +1,74 @@
+logging:
+  level:
+    root: info
+#mybatis:
+#  mapperLocations: classpath:mapper/**/*.xml
+#mybatis-plus映射mapper文件
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+spring:
+  shardingsphere:
+    datasource:
+      common:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+      ds0:
+        autoCommit: false
+        jdbc-url: jdbc:mysql://localhost:3306/money_0
+        password: 123456
+        username: root
+      ds1:
+        autoCommit: false
+        jdbc-url: jdbc:mysql://localhost:3306/money_1
+        password: 123456
+        username: root
+      names: ds0,ds1
+    rules:
+      props:
+        sql:
+          show: true
+      sharding:
+        key-generators:
+          snowflake:
+            props:
+              worker-id: 33
+            type: snowflake
+        sharding-algorithms:
+          database-inline:
+            props:
+              algorithm-expression: ds$->{id % 2}
+            type: INLINE
+          table-inline:
+            props:
+              algorithm-expression: account_$->{id % 2}
+            type: INLINE
+        tables:
+          #由于整合了mybatis-plus，所以这里逻辑表名称改成跟实际表名称一致
+          account:
+            actual-data-nodes: ds$->{0..1}.account_$->{0..1}
+            database-strategy:
+              standard:
+                sharding-algorithm-name: database-inline
+                sharding-column: id
+            key-generate-strategy:
+              column: id
+              key-generator-name: snowflake
+            key-generator:
+              column: id
+              props:
+                worker:
+                  id: 33
+              type: SNOWFLAKE
+            table-strategy:
+              standard:
+                sharding-algorithm-name: table-inline
+                sharding-column: id
+swagger:
+  application-description: springfox swagger 3.0整合
+  application-name: Tomato Shop
+  application-version: 1.0
+  enable: true
+  try-host: http://localhost:${server.port}
