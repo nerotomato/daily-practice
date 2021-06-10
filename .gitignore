@@ -33,3 +33,7 @@ gradle-app.setting
 .settings/
 .classpath
 .project
+
+# Atomikos XA #
+.lck
+.log
