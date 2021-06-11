@@ -44,6 +44,7 @@ public class NettyHttpClient {
 
             //发起同步连接
             //ChannelFuture channelFuture = bootstrap.connect(uri.getHost(), uri.getPort());
+
             //发起异步连接
             ChannelFuture channelFuture = bootstrap.connect(uri.getHost(), uri.getPort()).sync();
 
@@ -92,18 +93,4 @@ public class NettyHttpClient {
         }
         return httpInboundHandler.getResponse();
     }
-
-   /* *//**
-     * 客户端关闭
-     *//*
-    private static void close() {
-        //关闭客户端套接字
-        if (clientChannel != null) {
-            clientChannel.close();
-        }
-        //关闭客户端线程组
-        if (group != null) {
-            group.shutdownGracefully();
-        }
-    }*/
 }

@@ -62,10 +62,6 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
         if (msg instanceof DefaultHttpResponse) {
             DefaultHttpResponse defaultHttpResponse = (DefaultHttpResponse) msg;
             String result = defaultHttpResponse.toString();
-            //System.out.println("response -> " + result);
-            //rpcfxResponse = JSON.parseObject(result, RpcfxResponse.class);
-            //System.out.println("Response message is : " + result);
-            //promise.setSuccess();
         } else {
             ctx.fireChannelRead(msg);
         }

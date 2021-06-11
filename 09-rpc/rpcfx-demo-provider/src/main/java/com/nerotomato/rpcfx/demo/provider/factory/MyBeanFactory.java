@@ -61,10 +61,4 @@ public class MyBeanFactory {
         }
         return map;
     }
-
-
-    public static void main(String[] args) {
-        Map<String, String> beanMap = getBeanMap();
-        System.out.println(beanMap);
-    }
 }

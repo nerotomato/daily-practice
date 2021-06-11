@@ -50,7 +50,7 @@ public final class Rpcfx {
                 new Class[]{serviceClass}, new RpcfxInvocationHandler(serviceClass, url, filters));
     }
 
-    //实现AOP 使用bytebuddy实现代理
+    //实现AOP 使用bytebuddy实现动态代理
     public static <T> T createByteBuddyDynamicProxy(final Class<T> serviceClass, final String url, Filter... filters) throws Exception {
         return (T) new ByteBuddy().subclass(Object.class)
                 .implement(serviceClass)

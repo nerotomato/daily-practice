@@ -3,7 +3,6 @@ package com.nerotomato.rpcfx.client.initializer;
 import com.nerotomato.rpcfx.client.handler.HttpInboundHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.ChannelPromise;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.*;
 
@@ -20,11 +19,6 @@ public class HttpInboundInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     public void initChannel(SocketChannel ch) {
         ChannelPipeline p = ch.pipeline();
-//		if (sslCtx != null) {
-//			p.addLast(sslCtx.newHandler(ch.alloc()));
-//		}
-        //p.addLast(new HttpServerCodec());
-        //p.addLast(new HttpServerExpectContinueHandler());
         // 客户端接收到的是httpResponse响应，所以要使用HttpResponseDecoder进行解码
         p.addLast(new HttpResponseDecoder());
         // 客户端发送的是httpRequest，所以要使用HttpRequestEncoder进行编码
