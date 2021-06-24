@@ -1,0 +1,144 @@
+logging:
+  level:
+    root: info
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/**/*.xml
+spring:
+  cache:
+    redis:
+      host: localhost
+      lettuce:
+        pool:
+          max-active: 16
+          max-wait: 10ms
+    type: redis
+  shardingsphere:
+    datasource:
+      common:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+      ds0:
+        autoCommit: false
+        jdbc-url: jdbc:mysql://localhost:3306/tomato_shop_0?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        password: 123456
+        username: root
+      ds1:
+        autoCommit: false
+        jdbc-url: jdbc:mysql://localhost:3306/tomato_shop_1?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        password: 123456
+        username: root
+      names: ds0,ds1
+    rules:
+      props:
+        sql:
+          show: true
+      sharding:
+        key-generators:
+          snowflake:
+            props:
+              worker-id: 33
+            type: snowflake
+        sharding-algorithms:
+          cart-database-inline:
+            props:
+              algorithm-expression: ds$->{member_id % 2}
+            type: INLINE
+          database-inline:
+            props:
+              algorithm-expression: ds$->{id % 2}
+            type: INLINE
+          order-database-inline:
+            props:
+              algorithm-expression: ds$->{member_id % 2}
+            type: INLINE
+          order-detail-database-inline:
+            props:
+              algorithm-expression: ds$->{member_id % 2}
+            type: INLINE
+          order-detail-table-inline:
+            props:
+              algorithm-expression: oms_order_detail_$->{order_id % 8}
+            type: INLINE
+          order-table-inline:
+            props:
+              algorithm-expression: oms_order_$->{id % 8}
+            type: INLINE
+          product-database-inline:
+            props:
+              algorithm-expression: ds$->{id % 2}
+            type: INLINE
+          stock-database-inline:
+            props:
+              algorithm-expression: ds$->{product_id % 2}
+            type: INLINE
+          user-database-inline:
+            props:
+              algorithm-expression: ds$->{id % 2}
+            type: INLINE
+        tables:
+          oms_cart_detail:
+            actual-data-nodes: ds$->{0..1}.oms_cart_detail
+            database-strategy:
+              standard:
+                sharding-algorithm-name: cart-database-inline
+                sharding-column: member_id
+          oms_order:
+            actual-data-nodes: ds$->{0..1}.oms_order_$->{0..7}
+            database-strategy:
+              standard:
+                sharding-algorithm-name: order-database-inline
+                sharding-column: member_id
+            key-generate-strategy:
+              column: id
+              key-generator-name: snowflake
+            table-strategy:
+              standard:
+                sharding-algorithm-name: order-table-inline
+                sharding-column: id
+          oms_order_detail:
+            actual-data-nodes: ds$->{0..1}.oms_order_detail_$->{0..7}
+            database-strategy:
+              standard:
+                sharding-algorithm-name: order-detail-database-inline
+                sharding-column: member_id
+            table-strategy:
+              standard:
+                sharding-algorithm-name: order-detail-table-inline
+                sharding-column: order_id
+          pms_product:
+            actual-data-nodes: ds$->{0..1}.pms_product
+            database-strategy:
+              standard:
+                sharding-algorithm-name: product-database-inline
+                sharding-column: id
+            key-generate-strategy:
+              column: id
+              key-generator-name: snowflake
+          pms_sku_stock:
+            actual-data-nodes: ds$->{0..1}.pms_sku_stock
+            database-strategy:
+              standard:
+                sharding-algorithm-name: stock-database-inline
+                sharding-column: product_id
+          ums_member:
+            actual-data-nodes: ds$->{0..1}.ums_member
+            database-strategy:
+              standard:
+                sharding-algorithm-name: user-database-inline
+                sharding-column: id
+            key-generate-strategy:
+              column: id
+              key-generator-name: snowflake
+    sharding:
+      default-database-strategy:
+        standard: database-inline
+      default-key-generate-strategy:
+        standard: snowflake
+swagger:
+  application-description: Distributed cache using redis
+  application-name: Distributed cache Service
+  application-version: 1.0
+  enable: true
+  try-host: http://localhost:${server.port}

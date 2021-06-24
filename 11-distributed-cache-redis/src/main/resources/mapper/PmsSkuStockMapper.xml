@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="distributed.cache.redis.mapper.PmsSkuStockMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="distributed.cache.redis.entity.PmsSkuStock">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="sku_code" property="skuCode"/>
+        <result column="stock" property="stock"/>
+        <result column="low_stock" property="lowStock"/>
+        <result column="pic" property="pic"/>
+        <result column="sale" property="sale"/>
+        <result column="lock_stock" property="lockStock"/>
+        <result column="sp_data" property="spData"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, product_id, sku_code, stock, low_stock, pic, sale, lock_stock, sp_data, create_time, update_time
+    </sql>
+
+    <!--批量更新库存表-->
+    <update id="updateProductStockList" parameterType="list">
+        update pms_sku_stock
+        <foreach collection="list" item="item" index="index" separator=",">
+            set stock = stock + #{item.quantity}
+            where product_id =#{item.productId}
+        </foreach>
+    </update>
+
+</mapper>
