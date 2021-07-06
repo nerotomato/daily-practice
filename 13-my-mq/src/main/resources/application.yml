@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+swagger:
+  application-description: Custom MQ Service
+  application-name: Custom MQ Service
+  application-version: 1.0
+  enable: true
+  try-host: http://localhost:${server.port}

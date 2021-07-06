@@ -63,12 +63,17 @@ public class CustomQueue {
             index = 0; // 不存在群组时，添加该群组信息，并设置index=0，从第0位开始读取
             groupOffset.put(group, new AtomicInteger(index));
         } else {
-            //群组存在时，获取上次读取的位置信息，并且 index + 1
+            //群组存在时，获取上次读取的位置信息，
+            int lastIndex = groupOffset.get(group).get();
+            if(lastIndex == queue.size() -1){
+                //说明已读取到队列的最后一位
+                return null;
+            }
+            //index + 1
             index = groupOffset.get(group).incrementAndGet();
         }
 
-        //int index = groupOffset.getOrDefault(group, new AtomicInteger(-1)).incrementAndGet();
-        //当前群组读取的index >= 队列的大小了，说明读取完毕
+        //当前群组读取的index >= 队列的大小了，说明已经读完队列
         if (writeIndex == 0 || index >= queue.size()) {
             return null;
         }

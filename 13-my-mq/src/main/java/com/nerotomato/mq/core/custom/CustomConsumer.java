@@ -31,7 +31,8 @@ public class CustomConsumer {
 
     /**
      * 消费者 消费消息
-     * 可指定消费-num数量的消息
+     * num > 0 表示指定消费 num 数量的消息
+     * num=-1 表示消费队列剩余全部消息
      */
     public List<CustomMessage> poll(String topic, int num) {
         LinkedList<CustomMessage> messages = new LinkedList<>();
@@ -39,7 +40,17 @@ public class CustomConsumer {
             return messages;
         }
         log.info("queue message amount : " + customQueue.size());
-        while (!customQueue.isEmpty() || num > 0) {
+        if(num == -1){
+            while (!customQueue.isEmpty()) {
+                CustomMessage message = customQueue.get(group);
+                if (message == null) {
+                    break;
+                }
+                messages.add(message);
+            }
+            return messages;
+        }
+        while (!customQueue.isEmpty() && num > 0) {
             CustomMessage message = customQueue.get(group);
             if (message == null) {
                 break;

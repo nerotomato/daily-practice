@@ -9,5 +9,6 @@ import java.util.HashMap;
 @AllArgsConstructor
 public class CustomMessage<T> {
     private HashMap<String, Object> headers;
+    private String topic;
     private T body;
 }

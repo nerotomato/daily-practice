@@ -18,7 +18,7 @@ public class DemoCustomApplication {
         log.info("======> Start sending message to {}", topic);
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < 100000; i++) {
-            CustomMessage<Object> message = new CustomMessage<>(null, "test Custom Message " + i);
+            CustomMessage<String> message = new CustomMessage<>(null, topic, "test Custom Message " + i);
             producer.send(topic, message);
         }
         long endTime = System.currentTimeMillis();
